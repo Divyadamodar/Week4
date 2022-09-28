@@ -1,0 +1,49 @@
+package week4.day1;
+
+import java.util.List;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+
+import io.github.bonigarcia.wdm.WebDriverManager;
+
+public class LeafGroundFrames {
+
+	public static void main(String[] args) throws InterruptedException {
+		// TODO Auto-generated method stub
+		WebDriverManager.chromedriver().setup();
+		ChromeDriver driver= new ChromeDriver();
+		driver.manage().window().maximize();
+        driver.get("https://www.leafground.com/frame.xhtml");
+       
+        //clicking on click me frame
+        
+    WebElement frm = driver.findElement(By.xpath("//h5[text()=' Click Me (Inside frame)']/following-sibling::iframe"));
+	driver.switchTo().frame(frm);
+	driver.findElement(By.xpath("(//button[@id='Click'])[1]")).click();
+	driver.switchTo().defaultContent();
+	
+		// no. of frames in the page
+     List<WebElement> frm1= driver.findElements(By.tagName("iframe"));
+	int size = frm1.size();
+	System.out.println("The number of frames in the page is : " +size);
+	driver.switchTo().defaultContent();
+		
+	//inside nested frame
+	WebElement frm2 = driver.findElement(By.xpath("//h5[text()=' Click Me (Inside Nested frame)']/following-sibling::iframe"));
+	Thread.sleep(1000);
+    List<WebElement> frm3 = driver.findElements(By.tagName("iframe"));
+    int size1 = frm3.size();
+    System.out.println("The number of frames in the page is : " +size1);
+	driver.switchTo().frame(frm2);
+	driver.findElement(By.xpath("//button[text()='Click Me']")).click();
+	driver.switchTo().defaultContent();
+	
+	}
+
+
+	}
+
+
+
