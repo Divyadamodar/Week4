@@ -1,0 +1,93 @@
+package week4.day1;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+
+import org.openqa.selenium.Alert;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+
+import io.github.bonigarcia.wdm.WebDriverManager;
+
+public class MergeContactWindowHandle {
+
+	public static void main(String[] args) throws InterruptedException {
+		// TODO Auto-generated method stub
+		WebDriverManager.chromedriver().setup();
+		ChromeDriver driver=new ChromeDriver();
+		
+		//Launch URL of leaftaps
+		driver.get("http://leaftaps.com/opentaps/control/login");
+		driver.manage().window().maximize();
+		
+		//Enter UserName and Password
+		driver.findElement(By.id("username")).sendKeys("DemoCSR");
+		driver.findElement(By.id("password")).sendKeys("crmsfa");
+		
+		//Click on Login Button 
+		driver.findElement(By.className("decorativeSubmit")).click();
+		
+		//Click on CRM/SFA Link
+		driver.findElement(By.xpath("//a[contains(text(),'CRM/SFA')]")).click();
+		
+		//Click on contacts Button
+		driver.findElement(By.xpath("//a[text()='Contacts']")).click();
+		
+		//Click on Merge Contacts using xpath Locator
+		driver.findElement(By.xpath("//a[text()='Merge Contacts']")).click();
+		 
+		 //Click on Widget of From Contact
+		driver.findElement(By.xpath("//img[@alt='Lookup']")).click();
+		
+		Set<String> windowHandles = driver.getWindowHandles();
+		List<String>windows=new ArrayList<String>(windowHandles);
+		driver.switchTo().window(windows.get(1));
+		driver.manage().window().maximize();
+		Thread.sleep(3000);
+		 
+		 //click on First Resulting Contact
+		
+		driver.findElement(By.xpath("//td[@class='x-grid3-col x-grid3-cell x-grid3-td-partyId x-grid3-cell-first ']//a")).click();
+		Thread.sleep(4000);
+		driver.switchTo().window(windows.get(0));
+		 
+		 //click on Widget of To Contact
+		
+		WebElement findElement = driver.findElement(By.xpath("//input[@name='partyIdTo']/following-sibling::a/img"));
+		findElement.click();
+		
+		Set<String> windowHandles1 = driver.getWindowHandles();
+		List<String>windows1=new ArrayList<String>(windowHandles1);
+		driver.switchTo().window(windows1.get(1));
+		driver.manage().window().maximize();
+		Thread.sleep(4000);
+		 
+		 //Click on Second Resulting Contact
+			
+		driver.findElement(By.xpath("(//div[@class='x-grid3-cell-inner x-grid3-col-partyId'])[2]/a")).click();
+		Thread.sleep(6000);
+		driver.switchTo().window(windows.get(0));
+		 
+		 //Click on Merge button using Xpath Locator
+		
+		driver.findElement(By.xpath("//a[text()='Merge']")).click();
+		//Accept the Alert
+		Alert ss=driver.switchTo().alert();
+		ss.accept();
+		Thread.sleep(5000);
+		 
+		//Verify the title of the page
+		String ttle = driver.getTitle();
+		System.out.println("The Title of the page is = "+ttle);
+		
+		if(ttle.contains("View Contact"))
+			System.out.println("Title of the page is verified correct");
+		else
+			System.out.println("Title of the page is not verified");
+
+
+	}
+
+}
